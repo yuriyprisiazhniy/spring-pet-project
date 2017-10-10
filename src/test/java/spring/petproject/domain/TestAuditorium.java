@@ -1,14 +1,12 @@
-package spring.hometask.domain;
+package spring.petproject.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import spring.hometask.domain.Auditorium;
 
 
 public class TestAuditorium {

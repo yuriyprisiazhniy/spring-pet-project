@@ -1,10 +1,10 @@
-package spring.hometask.service;
+package spring.petproject.service;
 
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import spring.hometask.domain.DomainObject;
+import spring.petproject.domain.DomainObject;
 
 /**
  *

@@ -1,4 +1,4 @@
-package spring.hometask.domain;
+package spring.petproject.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

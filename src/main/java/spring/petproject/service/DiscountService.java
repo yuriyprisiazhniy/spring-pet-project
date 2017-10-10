@@ -1,12 +1,12 @@
-package spring.hometask.service;
+package spring.petproject.service;
 
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import spring.hometask.domain.Event;
-import spring.hometask.domain.User;
+import spring.petproject.domain.Event;
+import spring.petproject.domain.User;
 
 
 public interface DiscountService {

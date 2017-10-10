@@ -1,4 +1,4 @@
-package spring.hometask.domain;
+package spring.petproject.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
-import spring.hometask.domain.Auditorium;
-import spring.hometask.domain.Event;
-import spring.hometask.domain.EventRating;
 
 
 public class TestEvent {

@@ -1,11 +1,11 @@
-package spring.hometask.service;
+package spring.petproject.service;
 
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import spring.hometask.domain.Auditorium;
+import spring.petproject.domain.Auditorium;
 
 
 public interface AuditoriumService {
