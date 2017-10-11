@@ -203,4 +203,12 @@ public class Event extends DomainObject {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + getId() +
+                ", name='" + name + '\'' +
+                ", rating=" + rating +
+                '}';
+    }
 }

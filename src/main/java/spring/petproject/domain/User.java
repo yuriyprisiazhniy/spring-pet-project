@@ -88,4 +88,13 @@ public class User extends DomainObject {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + getId() +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
