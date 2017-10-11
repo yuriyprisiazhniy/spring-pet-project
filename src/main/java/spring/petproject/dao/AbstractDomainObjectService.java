@@ -1,4 +1,4 @@
-package spring.petproject.service;
+package spring.petproject.dao;
 
 import java.util.Collection;
 

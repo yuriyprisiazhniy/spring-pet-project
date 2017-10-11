@@ -3,6 +3,7 @@ package spring.petproject.service;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import spring.petproject.dao.AbstractDomainObjectService;
 import spring.petproject.domain.Event;
 
 import java.time.LocalDate;

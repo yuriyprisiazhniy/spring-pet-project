@@ -13,4 +13,10 @@ public class DomainObject {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "DomainObject{" +
+                "id=" + id +
+                '}';
+    }
 }
