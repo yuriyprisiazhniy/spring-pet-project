@@ -2,7 +2,6 @@ package spring.petproject.service.impl;
 
 import org.springframework.stereotype.Service;
 import spring.petproject.dao.AbstractDomainObjectService;
-import spring.petproject.dao.mapstorage.AbstractStaticStorage;
 import spring.petproject.domain.Event;
 import spring.petproject.service.EventService;
 
@@ -11,6 +10,7 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,7 @@ public class EventServiceImpl implements EventService{
     @Nullable
     @Override
     public Event getByName(@Nonnull String name) {
-        return null;
+        return getAll().stream().filter(e -> Objects.equals(name, e.getName())).findAny().orElse(null);
     }
 
     @Nonnull

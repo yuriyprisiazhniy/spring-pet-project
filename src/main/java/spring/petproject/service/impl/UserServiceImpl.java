@@ -2,7 +2,6 @@ package spring.petproject.service.impl;
 
 import org.springframework.stereotype.Service;
 import spring.petproject.dao.AbstractDomainObjectService;
-import spring.petproject.domain.DomainObject;
 import spring.petproject.domain.User;
 import spring.petproject.service.UserService;
 
@@ -10,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {

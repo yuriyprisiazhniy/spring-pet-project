@@ -11,15 +11,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Abstract storage based on single static map for all domain objects.
+ * Uniqueness of objects is supported by id's uniqueness for each type of domain object.
+ * @param <T> - concrete type of Domain Object provided by children
+ * @see #getDomainClass()
+ */
 public abstract class AbstractStaticStorage<T extends DomainObject> implements AbstractDomainObjectService<T> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractStaticStorage.class);
 
     private static final Map<Class<? extends DomainObject>, Map<Long, ? extends DomainObject>> storage;
     static {
         storage = new ConcurrentHashMap<>();
-        logger.info("Static map storage initialized: {}", storage);
+        logger.info("Static map storage initialized");
     }
 
     @Override
