@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public final class IdGenerator {
+final class IdGenerator {
     private static final Map<Class<? extends DomainObject>, AtomicLong> domainCounters = new ConcurrentHashMap<>();
 
     private IdGenerator(){}
 
-    public static synchronized <T extends DomainObject> Long generateId(Class<T> clazz, Map<Long, T> storage) {
+    static synchronized <T extends DomainObject> Long generateId(Class<T> clazz, Map<Long, T> storage) {
         AtomicLong domainCounter = domainCounters.get(clazz);
         if (domainCounter == null) {
             domainCounter = new AtomicLong(0);

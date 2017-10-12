@@ -1,17 +1,16 @@
 package spring.petproject;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import spring.petproject.dao.AbstractDomainObjectService;
-import spring.petproject.dao.mapstorage.AbstractStaticStorage;
-import spring.petproject.dao.mapstorage.impl.StaticEventService;
-import spring.petproject.dao.mapstorage.impl.StaticUserRepository;
+import spring.petproject.dao.mapstorage.domainimpl.StaticEventDAO;
+import spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO;
+import spring.petproject.service.UserService;
+import spring.petproject.service.impl.EventServiceImpl;
 import spring.petproject.domain.*;
 import spring.petproject.service.EventService;
-import spring.petproject.service.UserService;
+import spring.petproject.service.impl.UserServiceImpl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  * Temporary class for launch
@@ -20,8 +19,9 @@ public class AppStarter {
 
     public static void main(String[] args) {
 //        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-        UserService userService = new StaticUserRepository();
-        EventService eventService = new StaticEventService();
+
+       /* UserService userService = new UserServiceImpl();
+        EventService eventService = new EventServiceImpl();
 
         User user1 = new User();
         User user2 = new User();
@@ -60,7 +60,26 @@ public class AppStarter {
         ticketService.save(ticket);
         System.out.println(ticketService.getAll());
 
-        System.out.println("User by email: " + userService.getUserByEmail("mail"));
+        System.out.println("User by email: " + userService.getUserByEmail("mail"));*/
 
+       EventService eventService = new EventServiceImpl(new StaticEventDAO());
+       LocalDateTime now = LocalDateTime.now();
+
+       Event event = new Event();
+       event.setName("First");
+       event.setAirDates(new TreeSet<>(Arrays.asList(now, now.plusDays(1), now.plusDays(2))));
+       eventService.save(event);
+
+        Event event1 = new Event();
+        LocalDateTime shifted = now.plusHours(1);
+        event1.setName("Second");
+        event1.setAirDates(new TreeSet<>(Arrays.asList(shifted, shifted.plusDays(1))));
+        eventService.save(event1);
+
+        System.out.println(eventService.getNextEvents(now.plusHours(7)));
+
+        UserService userService = new UserServiceImpl(new StaticUserDAO());
+        userService.save(new User(){{setFirstName("First");}});
+        System.out.println(userService.getAll());
     }
 }
