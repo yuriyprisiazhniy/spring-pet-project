@@ -1,5 +1,9 @@
 package spring.petproject;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import spring.petproject.dao.AbstractDomainObjectService;
+import spring.petproject.dao.mapstorage.AbstractStaticStorage;
 import spring.petproject.dao.mapstorage.domainimpl.StaticEventDAO;
 import spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO;
 import spring.petproject.service.UserService;
@@ -10,6 +14,7 @@ import spring.petproject.service.impl.UserServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -18,10 +23,10 @@ import java.util.TreeSet;
 public class AppStarter {
 
     public static void main(String[] args) {
-//        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
 
-       /* UserService userService = new UserServiceImpl();
-        EventService eventService = new EventServiceImpl();
+        UserService userService = context.getBean(UserService.class);
+        EventService eventService = context.getBean(EventService.class);
 
         User user1 = new User();
         User user2 = new User();
@@ -33,7 +38,7 @@ public class AppStarter {
         user4.setId(3L);
         User user5 = new User();
 
-        System.out.println("Returned object: " + userService.save(user1));
+        userService.save(user1);
         userService.save(user2);
         userService.save(user3);
         userService.save(user4);
@@ -50,36 +55,14 @@ public class AppStarter {
         System.out.println("All events: " + eventService.getAll());
         System.out.println("All users: " + userService.getAll());
 
-        AbstractDomainObjectService<Ticket> ticketService = new AbstractStaticStorage<Ticket>() {
-            @Override
-            protected Class<Ticket> getDomainClass() {
-                return Ticket.class;
-            }
-        };
-        Ticket ticket = new Ticket(user1, event1, LocalDateTime.now(), 2);
-        ticketService.save(ticket);
-        System.out.println(ticketService.getAll());
+        System.out.println("User by email: " + userService.getUserByEmail("mail"));
 
-        System.out.println("User by email: " + userService.getUserByEmail("mail"));*/
+        System.out.println("All storage content:");
+        Map<Class<? extends DomainObject>, Map<Long, ? extends DomainObject>> allStorageContent = AbstractStaticStorage.getAllStorageContent();
+        for (Class cl : allStorageContent.keySet()) {
+            System.out.print(cl.getSimpleName() + " : ");
+            System.out.println(allStorageContent.get(cl));
+        }
 
-       EventService eventService = new EventServiceImpl(new StaticEventDAO());
-       LocalDateTime now = LocalDateTime.now();
-
-       Event event = new Event();
-       event.setName("First");
-       event.setAirDates(new TreeSet<>(Arrays.asList(now, now.plusDays(1), now.plusDays(2))));
-       eventService.save(event);
-
-        Event event1 = new Event();
-        LocalDateTime shifted = now.plusHours(1);
-        event1.setName("Second");
-        event1.setAirDates(new TreeSet<>(Arrays.asList(shifted, shifted.plusDays(1))));
-        eventService.save(event1);
-
-        System.out.println(eventService.getNextEvents(now.plusHours(7)));
-
-        UserService userService = new UserServiceImpl(new StaticUserDAO());
-        userService.save(new User(){{setFirstName("First");}});
-        System.out.println(userService.getAll());
     }
 }

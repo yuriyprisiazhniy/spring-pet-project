@@ -84,4 +84,13 @@ public abstract class AbstractStaticStorage<T extends DomainObject> implements A
         Map<Long, T> domainStorage = (Map<Long, T>) storage.get(domainClass);
         return domainStorage != null ? domainStorage : new HashMap<>();
     }
+
+    /**
+     * Temp method for debug purposes
+     */
+    //TODO: remove this method
+    @Deprecated
+    public static Map<Class<? extends DomainObject>, Map<Long, ? extends DomainObject>> getAllStorageContent() {
+        return new HashMap<>(storage);
+    }
 }
