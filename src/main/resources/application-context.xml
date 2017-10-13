@@ -26,9 +26,17 @@
         <constructor-arg ref="userDAO"/>
     </bean>
     <bean id="auditoriumService" class="spring.petproject.service.impl.AuditoriumServiceImpl">
-        <!--<property name="auditoriumNames" value="#{'${auditorium.names}'.split(';')}"/>-->
-        <!--<property name="vipSeats" value="#{'${auditorium.vipsSeats}'.split(';')}"/>-->
         <constructor-arg value="#{${auditorium.property.map}}"/>
+    </bean>
+    <bean id="bookingService" class="spring.petproject.service.impl.BookingServiceImpl">
+        <constructor-arg ref="discountService"/>
+    </bean>
+
+    <!--TODO: define actual discountStrategies and remove to another context file-->
+    <bean id="discountService" class="spring.petproject.service.impl.DiscountServiceImpl">
+        <property name="discountStrategies">
+            <list></list>
+        </property>
     </bean>
 
 </beans>

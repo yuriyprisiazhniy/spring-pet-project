@@ -17,9 +17,7 @@ public class TestEvent {
 
 	@Before
 	public void initEvent() {
-		event = new Event();
-		event.setBasePrice(1.1);
-		event.setName("aaa");
+		event = new Event("aaa", 1.1);
 		event.setRating(EventRating.HIGH);
 	
 		LocalDateTime now = LocalDateTime.now();

@@ -1,5 +1,6 @@
 package spring.petproject.domain;
 
+import java.time.LocalDate;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeSet;
@@ -12,6 +13,8 @@ public class User extends DomainObject {
     private String lastName;
 
     private String email;
+
+    private LocalDate birthday;
 
     private NavigableSet<Ticket> tickets = new TreeSet<>();
 
@@ -47,45 +50,30 @@ public class User extends DomainObject {
         this.tickets = tickets;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email);
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        User other = (User) obj;
-        if (email == null) {
-            if (other.email != null) {
-                return false;
-            }
-        } else if (!email.equals(other.email)) {
-            return false;
-        }
-        if (firstName == null) {
-            if (other.firstName != null) {
-                return false;
-            }
-        } else if (!firstName.equals(other.firstName)) {
-            return false;
-        }
-        if (lastName == null) {
-            if (other.lastName != null) {
-                return false;
-            }
-        } else if (!lastName.equals(other.lastName)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email, birthday);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        return birthday != null ? birthday.equals(user.birthday) : user.birthday == null;
     }
 
     @Override

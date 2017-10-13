@@ -1,5 +1,6 @@
 package spring.petproject.domain;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NavigableMap;
@@ -20,6 +21,19 @@ public class Event extends DomainObject {
     private EventRating rating;
 
     private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+
+    public Event(String name, double basePrice) {
+        this.name = name;
+        this.basePrice = basePrice;
+    }
+
+    public Event(String name, NavigableSet<LocalDateTime> airDates, double basePrice, EventRating rating, NavigableMap<LocalDateTime, Auditorium> auditoriums) {
+        this.name = name;
+        this.airDates = airDates;
+        this.basePrice = basePrice;
+        this.rating = rating;
+        this.auditoriums = auditoriums;
+    }
 
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
@@ -134,6 +148,15 @@ public class Event extends DomainObject {
     public boolean airsOnDates(LocalDate from, LocalDate to) {
         return airDates.stream()
                 .anyMatch(dt -> dt.toLocalDate().compareTo(from) >= 0 && dt.toLocalDate().compareTo(to) <= 0);
+    }
+    /**
+    * Get auditorium where event will occur in specified dateTime
+     * @param time time of event air
+     * @return auditorium or <code>null</code> if event doesn't air in specified time
+    */
+    @Nullable
+    public Auditorium getAuditoriumOnDateTime(LocalDateTime time) {
+        return auditoriums.get(time);
     }
 
     public String getName() {
