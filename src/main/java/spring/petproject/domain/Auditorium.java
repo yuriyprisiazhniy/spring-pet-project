@@ -87,4 +87,11 @@ public class Auditorium {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Auditorium{" +
+                "name='" + name + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                '}';
+    }
 }

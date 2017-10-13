@@ -7,8 +7,13 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:auditoriums/*-auditorium.properties"/>
-
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/auditoriums/*.properties</value>
+            </list>
+        </property>
+    </bean>
     <!--domain DAO's-->
     <bean id="userDAO" class="spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO"/>
     <bean id="eventDAO" class="spring.petproject.dao.mapstorage.domainimpl.StaticEventDAO"/>
@@ -19,6 +24,11 @@
     </bean>
     <bean id="userService" class="spring.petproject.service.impl.UserServiceImpl">
         <constructor-arg ref="userDAO"/>
+    </bean>
+    <bean id="auditoriumService" class="spring.petproject.service.impl.AuditoriumServiceImpl">
+        <!--<property name="auditoriumNames" value="#{'${auditorium.names}'.split(';')}"/>-->
+        <!--<property name="vipSeats" value="#{'${auditorium.vipsSeats}'.split(';')}"/>-->
+        <constructor-arg value="#{${auditorium.property.map}}"/>
     </bean>
 
 </beans>
