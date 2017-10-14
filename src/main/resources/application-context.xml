@@ -8,6 +8,7 @@
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="discount-context.xml"/>
+    <import resource="validation-context.xml"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
