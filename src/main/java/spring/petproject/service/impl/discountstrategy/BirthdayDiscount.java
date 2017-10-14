@@ -14,7 +14,7 @@ public class BirthdayDiscount implements DiscountStrategy {
 
     private int datesDifference;
     private byte discountRate;
-    private String discountReason = String.format("User has birthday within %d days of air date", datesDifference);
+    private String discountReason;
 
     public BirthdayDiscount() {
         this(5, (byte) 5);
@@ -23,6 +23,7 @@ public class BirthdayDiscount implements DiscountStrategy {
     public BirthdayDiscount(int datesDifference, byte discountRate) {
         this.datesDifference = datesDifference;
         this.discountRate = discountRate;
+        discountReason = String.format("User has birthday within %d days of air date", datesDifference);
     }
 
     @Override
