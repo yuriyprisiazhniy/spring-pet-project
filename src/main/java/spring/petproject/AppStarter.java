@@ -7,6 +7,7 @@ import spring.petproject.dao.mapstorage.AbstractStaticStorage;
 import spring.petproject.dao.mapstorage.domainimpl.StaticEventDAO;
 import spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO;
 import spring.petproject.service.AuditoriumService;
+import spring.petproject.service.DiscountService;
 import spring.petproject.service.UserService;
 import spring.petproject.service.impl.EventServiceImpl;
 import spring.petproject.domain.*;
@@ -25,7 +26,7 @@ public class AppStarter {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-        AuditoriumService auditoriumService = context.getBean(AuditoriumService.class);
-        System.out.println("Auditoriums: " + auditoriumService.getAll());
+        DiscountService discountService = context.getBean(DiscountService.class);
+
     }
 }

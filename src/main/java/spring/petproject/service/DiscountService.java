@@ -1,10 +1,12 @@
 package spring.petproject.service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.sun.istack.internal.NotNull;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
 
@@ -27,4 +29,15 @@ public interface DiscountService {
      */
     byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long numberOfTickets);
 
+    /**
+     * Get all registered discount strategies
+     * @return set of discount strategies
+     */
+    Set<DiscountStrategy> getDiscountStrategies();
+
+    /**
+     * Register discount strategies
+     * @param discountStrategies set of discount strategies
+     */
+    void setDiscountStrategies(@NotNull Set<DiscountStrategy> discountStrategies);
 }

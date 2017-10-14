@@ -1,5 +1,6 @@
 package spring.petproject.service.impl;
 
+import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spring.petproject.domain.Discount;
@@ -12,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,16 +31,18 @@ public class DiscountServiceImpl implements DiscountService {
                 .max(Discount::compareTo);
         if (discount.isPresent()) {
             result = discount.get().getDiscount();
-            logger.info("Applied discount {}%. Reason: {}", result, discount.get().getReason());
+            logger.info("Applied discount {}% for user {}. Reason: {}", result, user, discount.get().getReason());
         }
         return result;
     }
 
     public Set<DiscountStrategy> getDiscountStrategies() {
-        return discountStrategies;
+        return new HashSet<>(discountStrategies);
     }
 
     public void setDiscountStrategies(Set<DiscountStrategy> discountStrategies) {
         this.discountStrategies = discountStrategies;
+        if (!discountStrategies.isEmpty())
+            logger.info("Registered {} discount strategies", discountStrategies.size());
     }
 }

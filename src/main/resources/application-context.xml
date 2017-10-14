@@ -7,6 +7,8 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <import resource="discount-context.xml"/>
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -31,12 +33,4 @@
     <bean id="bookingService" class="spring.petproject.service.impl.BookingServiceImpl">
         <constructor-arg ref="discountService"/>
     </bean>
-
-    <!--TODO: define actual discountStrategies and remove to another context file-->
-    <bean id="discountService" class="spring.petproject.service.impl.DiscountServiceImpl">
-        <property name="discountStrategies">
-            <list></list>
-        </property>
-    </bean>
-
 </beans>

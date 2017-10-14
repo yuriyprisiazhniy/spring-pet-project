@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AuditoriumServiceImpl implements AuditoriumService {
-    private static final Logger logger = LoggerFactory.getLogger(AuditoriumService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuditoriumServiceImpl.class);
 
     private final Set<Auditorium> auditoriums;
 
@@ -35,12 +35,13 @@ public class AuditoriumServiceImpl implements AuditoriumService {
     @Nullable
     @Override
     public Auditorium getByName(@Nonnull String name) {
-       return auditoriums.stream().filter(auditorium -> name.equals(auditorium.getName()))
+        return auditoriums.stream().filter(auditorium -> name.equals(auditorium.getName()))
                 .findAny().orElse(null);
     }
 
-    @Nonnull private Set<Auditorium> parsePropertyMap(Map<String, String> props) {
-       Set<Auditorium> parsedAuditorium = props.entrySet().stream().map(entry -> {
+    @Nonnull
+    private Set<Auditorium> parsePropertyMap(Map<String, String> props) {
+        Set<Auditorium> parsedAuditorium = props.entrySet().stream().map(entry -> {
             String name = entry.getKey();
             String[] seatsInfo = entry.getValue().split(";");
             long numberOfSeats = Long.valueOf(seatsInfo[0]);

@@ -22,5 +22,5 @@ public interface DiscountStrategy {
      *            Number of tickets that user buys
      * @return discount value in %
      */
-    Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long numberOfTickets);
+    @Nullable Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long numberOfTickets);
 }

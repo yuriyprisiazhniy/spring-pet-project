@@ -13,7 +13,7 @@ import java.util.Objects;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final AbstractDomainObjectService<User> userDAO;
+    private AbstractDomainObjectService<User> userDAO;
 
     public UserServiceImpl(AbstractDomainObjectService<User> dao) {
             this.userDAO = dao;
