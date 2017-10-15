@@ -48,8 +48,8 @@ public class ValidatorRegistry implements ValidationService, ApplicationContextA
             errors.reject("Null object");
             return errors;
         }
-        errors = prepareBindingResultObject(target);
         Class<?> clazz = target.getClass();
+        errors = new MapBindingResult(new HashMap<>(), clazz.getName());
         Set<Validator> appropriateValidators = validators.stream()
                 .filter(validator -> validator.supports(clazz)).collect(Collectors.toSet());
         if (appropriateValidators.isEmpty()) {
@@ -63,7 +63,12 @@ public class ValidatorRegistry implements ValidationService, ApplicationContextA
         return errors;
     }
 
-    private Errors prepareBindingResultObject(Object target) {
-        return new MapBindingResult(new HashMap<>(), target.getClass().getName());
+    @Override
+    public Errors validate(Object object, Errors errors) {
+        Errors validation = validate(object);
+        if (errors != null) {
+             errors.addAllErrors(validation);
+             return errors;
+        } else return validation;
     }
 }

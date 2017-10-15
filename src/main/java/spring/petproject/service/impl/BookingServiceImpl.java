@@ -3,9 +3,12 @@ package spring.petproject.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.Errors;
 import spring.petproject.domain.*;
 import spring.petproject.service.BookingService;
 import spring.petproject.service.DiscountService;
+import spring.petproject.service.validation.engine.ValidationException;
+import spring.petproject.service.validation.engine.ValidationService;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,6 +26,7 @@ public class BookingServiceImpl implements BookingService {
     private final static Set<Ticket> purchasedTickets = new HashSet<>();
 
     private DiscountService discountService;
+    private ValidationService validationService;
 
     public BookingServiceImpl(DiscountService discountService) {
         this.discountService = discountService;
@@ -30,13 +34,19 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user, @Nonnull Set<Long> seats) {
+        Errors validationErrors = null;
+        for (Long seat : seats) {
+            validationErrors = validationService.validate(new Ticket(user, event, dateTime, seat), validationErrors);
+        }
+        if (validationErrors != null && validationErrors.hasErrors()) {
+            throw new ValidationException("Invalid input data: " +
+                    validationErrors.getAllErrors().stream()
+                            .map(e -> e.getDefaultMessage())
+                            .reduce((s, s2) -> s.concat(", ").concat(s2))
+                            .orElse("No details"));
+        }
+
         Auditorium auditorium = event.getAuditoriumOnDateTime(dateTime);
-        if (auditorium == null) {
-            throw new IllegalArgumentException("Event doesn't air on specified dateTime");
-        }
-        if (!auditorium.getAllSeats().containsAll(seats)) {
-            throw new IllegalArgumentException("There are no specified seats in auditorium");
-        }
         double basePrice = event.getRating() == EventRating.HIGH
                 ? event.getBasePrice() * HIGH_RATE_COST_MULTIPLIER
                 : event.getBasePrice();
@@ -66,5 +76,9 @@ public class BookingServiceImpl implements BookingService {
         return purchasedTickets.stream()
                 .filter(ticket -> event.equals(ticket.getEvent()) && dateTime.equals(ticket.getDateTime()))
                 .collect(Collectors.toSet());
+    }
+
+    public void setValidationService(ValidationService validationService) {
+        this.validationService = validationService;
     }
 }

@@ -1,7 +1,7 @@
 package spring.petproject.service.validation.engine;
 
 
-public class ValidatorNotFoundException extends RuntimeException{
+public class ValidatorNotFoundException extends ValidationException{
 
     public ValidatorNotFoundException() {
     }

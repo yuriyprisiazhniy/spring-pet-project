@@ -33,5 +33,6 @@
     </bean>
     <bean id="bookingService" class="spring.petproject.service.impl.BookingServiceImpl">
         <constructor-arg ref="discountService"/>
+        <property name="validationService" ref="validatorRegistry"/>
     </bean>
 </beans>
