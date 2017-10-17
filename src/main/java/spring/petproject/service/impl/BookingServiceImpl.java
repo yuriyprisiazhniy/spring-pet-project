@@ -37,6 +37,13 @@ public class BookingServiceImpl implements BookingService {
         if (!auditorium.getAllSeats().containsAll(seats)) {
             throw new IllegalArgumentException("There are no specified seats in auditorium");
         }
+        Set<Long> bookedSeats = getPurchasedTicketsForEvent(event, dateTime).stream()
+                .map(Ticket::getSeat)
+                .filter(seats::contains)
+                .collect(Collectors.toSet());
+        if (!bookedSeats.isEmpty()) {
+            throw new IllegalArgumentException("Some seats already booked: " + bookedSeats);
+        }
         double basePrice = event.getRating() == EventRating.HIGH
                 ? event.getBasePrice() * HIGH_RATE_COST_MULTIPLIER
                 : event.getBasePrice();
