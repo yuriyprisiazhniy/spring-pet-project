@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import spring.petproject.domain.Ticket;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
+import spring.petproject.service.exception.BookingException;
 
 
 public interface BookingService {
@@ -27,7 +28,7 @@ public interface BookingService {
      * @param seats
      *            Set of seat numbers that user wants to buy
      * @return total price
-     * @throws IllegalArgumentException if event doesn't air on specified dateTime or there are not enough seats
+     * @throws BookingException if event doesn't air on specified dateTime or there are not enough seats
      */
     public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
             @Nonnull Set<Long> seats);
@@ -38,7 +39,7 @@ public interface BookingService {
      * 
      * @param tickets
      *            Set of tickets
-     * @throws IllegalArgumentException some of specified tickets already booked
+     * @throws BookingException some of specified tickets already booked
      */
     public void bookTickets(@Nonnull Set<Ticket> tickets);
 

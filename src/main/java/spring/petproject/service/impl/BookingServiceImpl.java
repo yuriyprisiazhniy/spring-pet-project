@@ -6,6 +6,7 @@ import org.springframework.util.CollectionUtils;
 import spring.petproject.domain.*;
 import spring.petproject.service.BookingService;
 import spring.petproject.service.DiscountService;
+import spring.petproject.service.exception.BookingException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,18 +33,19 @@ public class BookingServiceImpl implements BookingService {
     public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user, @Nonnull Set<Long> seats) {
         Auditorium auditorium = event.getAuditoriumOnDateTime(dateTime);
         if (auditorium == null) {
-            throw new IllegalArgumentException("Event doesn't air on specified dateTime");
+            throw new BookingException("Event doesn't air on specified dateTime");
         }
         if (!auditorium.getAllSeats().containsAll(seats)) {
-            throw new IllegalArgumentException("There are no specified seats in auditorium");
+            throw new BookingException("There are no specified seats in auditorium");
         }
         Set<Long> bookedSeats = getPurchasedTicketsForEvent(event, dateTime).stream()
                 .map(Ticket::getSeat)
                 .filter(seats::contains)
                 .collect(Collectors.toSet());
         if (!bookedSeats.isEmpty()) {
-            throw new IllegalArgumentException("Some seats already booked: " + bookedSeats);
+            throw new BookingException("Some seats already booked: " + bookedSeats);
         }
+
         double basePrice = event.getRating() == EventRating.HIGH
                 ? event.getBasePrice() * HIGH_RATE_COST_MULTIPLIER
                 : event.getBasePrice();
@@ -56,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void bookTickets(@Nonnull Set<Ticket> tickets) {
         if (CollectionUtils.containsAny(purchasedTickets, tickets)) {
-            throw new IllegalArgumentException("Some of input tickets already booked");
+            throw new BookingException("Some of input tickets already booked");
         }
         purchasedTickets.addAll(tickets);
         logger.info("Booked {} tickets", tickets.size());
