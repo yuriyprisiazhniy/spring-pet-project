@@ -1,17 +1,18 @@
 package spring.petproject.domain;
 
-import static org.junit.Assert.assertEquals;
+
+import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Test;
+import static org.testng.Assert.assertEquals;
 
 
 public class TestAuditorium {
 	
-	@Test(expected = IllegalStateException.class)
+	@Test(expectedExceptions = IllegalStateException.class)
 	public void testCountVipsIllegalState() {
 		Auditorium a = new Auditorium();
 		a.setVipSeats(Stream.of(1L,2L,3L).collect(Collectors.toSet()));

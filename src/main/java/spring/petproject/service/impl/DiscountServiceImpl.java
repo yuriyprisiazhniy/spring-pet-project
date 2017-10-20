@@ -1,6 +1,5 @@
 package spring.petproject.service.impl;
 
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spring.petproject.domain.Discount;
@@ -40,7 +39,7 @@ public class DiscountServiceImpl implements DiscountService {
         return new HashSet<>(discountStrategies);
     }
 
-    public void setDiscountStrategies(Set<DiscountStrategy> discountStrategies) {
+    public void setDiscountStrategies(@Nonnull Set<DiscountStrategy> discountStrategies) {
         this.discountStrategies = discountStrategies;
         if (!discountStrategies.isEmpty())
             logger.info("Registered {} discount strategies", discountStrategies.size());

@@ -1,21 +1,23 @@
 package spring.petproject.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertFalse;
 
 
 public class TestEvent {
 
 	private Event event;
 
-	@Before
+	@BeforeMethod
 	public void initEvent() {
 		event = new Event("aaa", 1.1);
 		event.setRating(EventRating.HIGH);

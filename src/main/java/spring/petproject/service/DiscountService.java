@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.sun.istack.internal.NotNull;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
 
@@ -39,5 +38,5 @@ public interface DiscountService {
      * Register discount strategies
      * @param discountStrategies set of discount strategies
      */
-    void setDiscountStrategies(@NotNull Set<DiscountStrategy> discountStrategies);
+    void setDiscountStrategies(@Nonnull Set<DiscountStrategy> discountStrategies);
 }
