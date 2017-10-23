@@ -23,10 +23,10 @@ public class DiscountServiceImpl implements DiscountService {
     private Set<DiscountStrategy> discountStrategies = Collections.emptySet();
 
     @Override
-    public byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long numberOfTickets) {
+    public byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, Set<Long> tickets) {
         byte result = 0;
         Optional<Discount> discount = discountStrategies.stream()
-                .map(strategy -> strategy.calculateDiscount(user, event, airDateTime, numberOfTickets))
+                .map(strategy -> strategy.calculateDiscount(user, event, airDateTime, seat, tickets))
                 .max(Discount::compareTo);
         if (discount.isPresent()) {
             result = discount.get().getDiscount();

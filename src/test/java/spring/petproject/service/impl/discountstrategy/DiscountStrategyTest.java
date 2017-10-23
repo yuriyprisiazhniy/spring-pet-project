@@ -30,30 +30,30 @@ public class DiscountStrategyTest {
         return new Object[][]{
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusDays(6));
-                }}, testEvent, now, 5, null},
+                }}, testEvent, now, 1, 5, null},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusDays(5));
-                }}, testEvent, now, 5, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, 5, new Discount("", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusYears(20));
-                }}, testEvent, now, 5, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, 5, new Discount("", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(now.toLocalDate());
-                }}, testEvent, now, 6, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, 6, new Discount("", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().plusDays(3));
-                }}, testEvent, now, 8, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, 8, new Discount("", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusYears(4).plusDays(8));
-                }}, testEvent, now, 5, null},
-                {birthdayStrategy, null, testEvent, now, 5, null}
+                }}, testEvent, now, 1, 5, null},
+                {birthdayStrategy, null, testEvent, now, 1, 5, null}
         };
     }
 
     @Test(dataProvider = "birthdayStrategyDataProvider")
     public void testDiscountStrategy(DiscountStrategy strategy, User user, Event event,
-                                     LocalDateTime time, long numberOfTickets, Discount result) {
-        Discount discount = strategy.calculateDiscount(user, event, time, numberOfTickets);
+                                     LocalDateTime time, long seat, long numberOfTickets, Discount result) {
+        Discount discount = strategy.calculateDiscount(user, event, time, seat, numberOfTickets);
         assertEquals(discount, result);
     }
 

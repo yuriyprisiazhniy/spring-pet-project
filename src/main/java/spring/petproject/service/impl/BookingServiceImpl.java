@@ -46,13 +46,17 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingException("Some seats already booked: " + bookedSeats);
         }
 
-        double basePrice = event.getRating() == EventRating.HIGH
+        double eventBasePrice = event.getRating() == EventRating.HIGH
                 ? event.getBasePrice() * HIGH_RATE_COST_MULTIPLIER
                 : event.getBasePrice();
-        long vipSeats = auditorium.countVipSeats(seats);
-        double totalPrice = basePrice * (vipSeats * VIP_SEAT_COST_MULTIPLIER + seats.size() - vipSeats);
-        byte discount = discountService.getDiscount(user, event, dateTime, seats.size());
-        return totalPrice - totalPrice * discount / 100;
+        return seats.stream().mapToDouble(seat -> {
+            double seatPrice = auditorium.getVipSeats().contains(seat)
+                    ? eventBasePrice * VIP_SEAT_COST_MULTIPLIER
+                    : eventBasePrice;
+            byte discount = discountService.getDiscount(user, event, dateTime, seat, seats);
+            return seatPrice - seatPrice * discount / 100;
+        }).sum();
+
     }
 
     @Override
