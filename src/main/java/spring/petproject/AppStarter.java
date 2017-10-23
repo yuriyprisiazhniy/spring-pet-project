@@ -15,7 +15,10 @@ import spring.petproject.domain.*;
 import spring.petproject.service.EventService;
 import spring.petproject.service.impl.UserServiceImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +30,18 @@ import java.util.TreeSet;
 public class AppStarter {
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-        DiscountService discountService = context.getBean(DiscountService.class);
+//        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+//        DiscountService discountService = context.getBean(DiscountService.class);
 
+        LocalDate now = LocalDate.now();
+        LocalDate date = now.minusYears(10);
+
+        System.out.println(date);
+        System.out.println(ChronoUnit.DAYS.between(date , now));
+
+        date = date.with(Year.from(now));
+        System.out.println(date);
+
+        System.out.println(ChronoUnit.DAYS.between(date , now));
     }
 }

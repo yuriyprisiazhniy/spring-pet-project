@@ -16,6 +16,21 @@ public class Discount implements Comparable<Discount>{
         return Byte.compare(discount, other.getDiscount());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Discount discount1 = (Discount) o;
+
+        return discount == discount1.discount;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) discount;
+    }
+
     public String getReason() {
         return reason;
     }

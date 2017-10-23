@@ -8,6 +8,7 @@ import spring.petproject.service.DiscountStrategy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.temporal.ChronoUnit;
 
 public class BirthdayDiscount implements DiscountStrategy {
@@ -30,7 +31,7 @@ public class BirthdayDiscount implements DiscountStrategy {
     public Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long numberOfTickets) {
         if (user == null)
             return null;
-        long rangeBetweenEvents = Math.abs(ChronoUnit.DAYS.between(user.getBirthday(), time));
+        long rangeBetweenEvents = Math.abs(ChronoUnit.DAYS.between(user.getBirthday().with(Year.from(time)), time));
         return rangeBetweenEvents <= datesDifference
                 ? new Discount(discountReason, discountRate)
                 : null;
