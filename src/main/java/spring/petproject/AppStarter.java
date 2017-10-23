@@ -30,18 +30,7 @@ import java.util.TreeSet;
 public class AppStarter {
 
     public static void main(String[] args) {
-//        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-//        DiscountService discountService = context.getBean(DiscountService.class);
-
-        LocalDate now = LocalDate.now();
-        LocalDate date = now.minusYears(10);
-
-        System.out.println(date);
-        System.out.println(ChronoUnit.DAYS.between(date , now));
-
-        date = date.with(Year.from(now));
-        System.out.println(date);
-
-        System.out.println(ChronoUnit.DAYS.between(date , now));
+        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        DiscountService discountService = context.getBean(DiscountService.class);
     }
 }
