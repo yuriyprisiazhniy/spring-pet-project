@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertFalse;
 
 
-public class TestEvent {
+public class EventTest {
 
 	private Event event;
 

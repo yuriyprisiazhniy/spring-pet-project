@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(@Nonnull String email) {
         return getAll().stream()
-                .filter(u -> Objects.equals(email, u.getEmail())).findAny().orElse(null);
+                .filter(u -> Objects.equals(email, u.getEmail()))
+                .findAny().orElse(null);
     }
 }

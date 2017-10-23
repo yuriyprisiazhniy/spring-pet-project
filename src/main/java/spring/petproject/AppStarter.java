@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import spring.petproject.dao.AbstractDomainObjectService;
 import spring.petproject.dao.mapstorage.AbstractStaticStorage;
+import spring.petproject.dao.mapstorage.IdGenerator;
 import spring.petproject.dao.mapstorage.domainimpl.StaticEventDAO;
 import spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO;
 import spring.petproject.service.AuditoriumService;
@@ -16,6 +17,7 @@ import spring.petproject.service.impl.UserServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import static org.testng.Assert.assertEquals;
 
 
-public class TestAuditorium {
+public class AuditoriumTest {
 	
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void testCountVipsIllegalState() {

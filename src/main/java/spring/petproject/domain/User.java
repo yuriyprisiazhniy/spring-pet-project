@@ -58,6 +58,12 @@ public class User extends DomainObject {
         this.birthday = birthday;
     }
 
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, email, birthday);

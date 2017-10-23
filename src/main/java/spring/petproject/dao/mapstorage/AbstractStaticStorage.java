@@ -8,6 +8,7 @@ import spring.petproject.domain.DomainObject;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,5 +84,15 @@ public abstract class AbstractStaticStorage<T extends DomainObject> implements A
         Class<T> domainClass = getDomainClass();
         Map<Long, T> domainStorage = (Map<Long, T>) storage.get(domainClass);
         return domainStorage != null ? domainStorage : new HashMap<>();
+    }
+
+    public static void clearStaticStorage(boolean doCleanIdGenerator) {
+        int domainObjectsCount = storage.values().stream()
+                .mapToInt(Map::size).sum();
+        storage.clear();
+        logger.info("Cleaned static storage. Removed {} domain objects.", domainObjectsCount);
+        if (doCleanIdGenerator) {
+            IdGenerator.clearIdStorage();
+        }
     }
 }
