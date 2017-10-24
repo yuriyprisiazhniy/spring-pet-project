@@ -31,6 +31,5 @@ public class AppStarter {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-        DiscountService discountService = context.getBean(DiscountService.class);
     }
 }
