@@ -11,10 +11,7 @@ import spring.petproject.service.DiscountStrategy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class DiscountServiceImpl implements DiscountService {
 
@@ -23,7 +20,7 @@ public class DiscountServiceImpl implements DiscountService {
     private Set<DiscountStrategy> discountStrategies = Collections.emptySet();
 
     @Override
-    public byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, Set<Long> tickets) {
+    public byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, NavigableSet<Long> tickets) {
         byte result = 0;
         Optional<Discount> discount = discountStrategies.stream()
                 .map(strategy -> strategy.calculateDiscount(user, event, airDateTime, seat, tickets))

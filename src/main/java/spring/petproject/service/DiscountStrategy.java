@@ -7,7 +7,8 @@ import spring.petproject.domain.User;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.NavigableSet;
 
 public interface DiscountStrategy {
 
@@ -23,7 +24,7 @@ public interface DiscountStrategy {
      *            Seat that user buys
      * @param tickets
      *            Tickets that user buys
-     * @return discount value in %
+     * @return discount value in % or null if discount can't be applied
      */
-    @Nullable Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, Set<Long> tickets);
+    @Nullable Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, NavigableSet<Long> tickets);
 }

@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import java.util.NavigableSet;
 
 public class BirthdayDiscount implements DiscountStrategy {
 
@@ -29,7 +29,7 @@ public class BirthdayDiscount implements DiscountStrategy {
     }
 
     @Override
-    public Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, Set<Long> tickets) {
+    public Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, NavigableSet<Long> tickets) {
         if (user == null)
             return null;
         long rangeBetweenEvents = Math.abs(ChronoUnit.DAYS.between(user.getBirthday().with(Year.from(time)), time));

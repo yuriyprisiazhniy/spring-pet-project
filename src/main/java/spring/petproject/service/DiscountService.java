@@ -1,6 +1,7 @@
 package spring.petproject.service;
 
 import java.time.LocalDateTime;
+import java.util.NavigableSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -28,7 +29,7 @@ public interface DiscountService {
      *            Tickets that user buys
      * @return discount value from 0 to 100
      */
-    byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, Set<Long> tickets);
+    byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, NavigableSet<Long> tickets);
 
     /**
      * Get all registered discount strategies

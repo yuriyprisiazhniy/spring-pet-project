@@ -1,6 +1,7 @@
 package spring.petproject.service;
 
 import java.time.LocalDateTime;
+import java.util.NavigableSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -31,7 +32,7 @@ public interface BookingService {
      * @throws BookingException if event doesn't air on specified dateTime or there are not enough seats
      */
     public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
-            @Nonnull Set<Long> seats);
+            @Nonnull NavigableSet<Long> seats);
 
     /**
      * Books tickets in internal system. If user is not

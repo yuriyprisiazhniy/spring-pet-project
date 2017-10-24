@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user, @Nonnull Set<Long> seats) {
+    public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user, @Nonnull NavigableSet<Long> seats) {
         Auditorium auditorium = event.getAuditoriumOnDateTime(dateTime);
         if (auditorium == null) {
             throw new BookingException("Event doesn't air on specified dateTime");

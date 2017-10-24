@@ -8,7 +8,9 @@ import spring.petproject.service.DiscountStrategy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NavigableSet;
 
 public class MultipleDiscount implements DiscountStrategy {
 
@@ -28,10 +30,16 @@ public class MultipleDiscount implements DiscountStrategy {
 
     @Nullable
     @Override
-    public Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, Set<Long> tickets) {
-        if (user != null) {
-            int notDiscountedTickets = user.getTickets().size() % discountMultiplier;
-
+    public Discount calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime time, long seat, NavigableSet<Long> tickets) {
+        int notDiscountedUserTickets = user != null
+                ? user.getTickets().size() % discountMultiplier
+                : 0;
+        List<Long> ticketList = new ArrayList<>(tickets);
+        int startIndex = discountMultiplier - notDiscountedUserTickets - 1;
+        for (int i = startIndex; i < ticketList.size(); i += discountMultiplier) {
+            if (ticketList.get(i).equals(seat)) {
+                return new Discount(discountReason, discountRate);
+            }
         }
         return null;
     }
