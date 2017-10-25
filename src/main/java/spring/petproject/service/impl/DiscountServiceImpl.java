@@ -24,6 +24,7 @@ public class DiscountServiceImpl implements DiscountService {
         byte result = 0;
         Optional<Discount> discount = discountStrategies.stream()
                 .map(strategy -> strategy.calculateDiscount(user, event, airDateTime, seat, tickets))
+                .filter(Objects::nonNull)
                 .max(Discount::compareTo);
         if (discount.isPresent()) {
             result = discount.get().getDiscount();

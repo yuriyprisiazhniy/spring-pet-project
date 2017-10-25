@@ -2,6 +2,7 @@ package spring.petproject.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import spring.petproject.domain.Auditorium;
 import spring.petproject.service.AuditoriumService;
 
@@ -45,6 +46,7 @@ public class AuditoriumServiceImpl implements AuditoriumService {
             String[] seatsInfo = entry.getValue().split(";");
             long numberOfSeats = Long.valueOf(seatsInfo[0]);
             Set<Long> vipSeats = Arrays.stream(seatsInfo[1].substring(1, seatsInfo[1].length() - 1).split(","))
+                    .filter(s -> !StringUtils.isEmpty(s))
                     .map(Long::valueOf)
                     .collect(Collectors.toSet());
 
