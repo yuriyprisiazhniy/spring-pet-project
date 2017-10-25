@@ -22,7 +22,7 @@ public class BookingServiceImpl implements BookingService {
     private static final double VIP_SEAT_COST_MULTIPLIER = 2;
     private static final double HIGH_RATE_COST_MULTIPLIER = 1.2;
 
-    private final static Set<Ticket> purchasedTickets = new HashSet<>();
+    private final Set<Ticket> purchasedTickets = new HashSet<>();
 
     private DiscountService discountService;
 
