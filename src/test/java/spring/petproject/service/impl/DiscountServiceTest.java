@@ -50,6 +50,7 @@ public class DiscountServiceTest {
     @Test(dataProvider = "getDiscountDataProvider")
     public void testGetDiscountMethod(User user, Event event, LocalDateTime time, long seat, NavigableSet<Long> tickets, byte result) {
         byte discount = discountService.getDiscount(user, event, time, seat, tickets);
+        discountService.getDiscountStrategies().forEach(strategy -> verify(strategy).calculateDiscount(user, event, time, seat, tickets));
         assertEquals(discount, result);
     }
 }
