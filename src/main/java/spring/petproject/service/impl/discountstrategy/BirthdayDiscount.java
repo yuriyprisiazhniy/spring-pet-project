@@ -1,5 +1,6 @@
 package spring.petproject.service.impl.discountstrategy;
 
+import org.springframework.stereotype.Component;
 import spring.petproject.domain.Discount;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
@@ -12,6 +13,7 @@ import java.time.Year;
 import java.time.temporal.ChronoUnit;
 import java.util.NavigableSet;
 
+@Component
 public class BirthdayDiscount implements DiscountStrategy {
 
     private int datesDifference;

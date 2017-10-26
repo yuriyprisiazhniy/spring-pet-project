@@ -1,5 +1,6 @@
 package spring.petproject.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.petproject.dao.AbstractDomainObjectService;
 import spring.petproject.domain.User;
@@ -15,6 +16,7 @@ public class UserServiceImpl implements UserService {
 
     private AbstractDomainObjectService<User> userDAO;
 
+    @Autowired
     public UserServiceImpl(AbstractDomainObjectService<User> dao) {
             this.userDAO = dao;
     }

@@ -2,6 +2,8 @@ package spring.petproject.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import spring.petproject.domain.*;
 import spring.petproject.service.BookingService;
@@ -16,6 +18,7 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class BookingServiceImpl implements BookingService {
     private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
@@ -26,6 +29,7 @@ public class BookingServiceImpl implements BookingService {
 
     private DiscountService discountService;
 
+    @Autowired
     public BookingServiceImpl(DiscountService discountService) {
         this.discountService = discountService;
     }
