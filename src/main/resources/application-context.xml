@@ -15,11 +15,4 @@
     <context:component-scan base-package="spring.petproject"/>
     <context:property-placeholder location="classpath:/auditoriums/*.properties"/>
 
-    <aop:config>
-        <aop:pointcut id="testPointcut" expression="execution(* spring.petproject.service.UserService.*(..))"/>
-        <aop:aspect ref="testAspect">
-            <aop:before method="logMethod" pointcut-ref="testPointcut"/>
-        </aop:aspect>
-    </aop:config>
-
 </beans>
