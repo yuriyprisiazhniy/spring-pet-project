@@ -1,17 +1,16 @@
 package spring.petproject.aspect;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import spring.petproject.domain.Event;
+import spring.petproject.domain.Ticket;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Aspect
 @Component
@@ -24,15 +23,34 @@ public class EventCounterAspect {
             pointcut = "execution(* spring.petproject.service.EventService.getByName(*))",
             returning = "event"
     )
-    public void countAccessEventByName(Event event) {
+    public void countAccessEventByNameTimes(Event event) {
         if (event != null) {
-            eventStatistic.putIfAbsent(event, new Statistic());
-            Statistic statistic = eventStatistic.get(event);
+            Statistic statistic = eventStatistic.computeIfAbsent(event, e -> new Statistic());
             statistic.accessedByName++;
-            logger.debug("Event accessed by name {} times", statistic.accessedByName);
+            logger.debug("Event {} accessed by name {} times", event, statistic.accessedByName);
         }
     }
 
+    @AfterReturning(
+            pointcut = "execution(* spring.petproject.service.BookingService.getTicketsPrice(..)) && args(event, ..))"
+    )
+    public void countPriceQueriedTimes(Event event) {
+        Statistic statistic = eventStatistic.computeIfAbsent(event, e -> new Statistic());
+        statistic.priceQueried++;
+        logger.debug("Price queried for event {} {} times", event, statistic.priceQueried);
+    }
+
+    @AfterReturning(
+            pointcut = "execution(* spring.petproject.service.BookingService.bookTickets(..)) && args(tickets))"
+    )
+    public void countTicketBookedTimes(Set<Ticket> tickets) {
+        tickets.forEach(ticket -> {
+            Event event = ticket.getEvent();
+            Statistic statistic = eventStatistic.computeIfAbsent(event, e -> new Statistic());
+            statistic.ticketsBooked++;
+            logger.debug("For event {} booked {} tickets", event, statistic.ticketsBooked);
+        });
+    }
 
     public Statistic getStatisticByEvent(Event e) {
         return eventStatistic.get(e);
