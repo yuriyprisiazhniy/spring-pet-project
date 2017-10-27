@@ -37,16 +37,16 @@ public class DiscountStrategyTest {
                 }}, testEvent, now, 1, tickets, null},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusDays(5));
-                }}, testEvent, now, 1, tickets, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusYears(20));
-                }}, testEvent, now, 1, tickets, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(now.minusYears(20).minusDays(5).toLocalDate());
-                }}, testEvent, now, 1, tickets, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().plusDays(3));
-                }}, testEvent, now, 1, tickets, new Discount("", (byte) 5)},
+                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
                 {birthdayStrategy, new User("First", "Last", "mail"){{
                     setBirthday(LocalDate.now().minusYears(4).plusDays(8));
                 }}, testEvent, now, 1, tickets, null},
@@ -72,12 +72,16 @@ public class DiscountStrategyTest {
                 {multipleStrategy, testUser, testEvent, now, 4L, new TreeSet<>(Collections.singleton(4L)), null},
                 {multipleStrategy, testUser, testEvent, now, 4L, new TreeSet<>(Arrays.asList(4L, 5L)), null},
                 {multipleStrategy, testUser, testEvent, now, 4L, new TreeSet<>(Arrays.asList(5L, 4L)), null},
-                {multipleStrategy, testUser, testEvent, now, 5L, new TreeSet<>(Arrays.asList(4L, 5L)), new Discount("", (byte) 50)},
+                {multipleStrategy, testUser, testEvent, now, 5L, new TreeSet<>(Arrays.asList(4L, 5L)),
+                        new Discount(multipleStrategy, "", (byte) 50)},
                 {multipleStrategy, null, testEvent, now, 4L, new TreeSet<>(Arrays.asList(1L, 2L, 3L, 4L, 5L)), null},
-                {multipleStrategy, null, testEvent, now, 5L, new TreeSet<>(Arrays.asList(1L, 2L, 3L, 4L, 5L)), new Discount("", (byte) 50)},
+                {multipleStrategy, null, testEvent, now, 5L, new TreeSet<>(Arrays.asList(1L, 2L, 3L, 4L, 5L)),
+                        new Discount(multipleStrategy, "", (byte) 50)},
                 {multipleStrategy, testUser, testEvent, now, 6L, pack10Seats, null},
-                {multipleStrategy, testUser, testEvent, now, 5L, pack10Seats, new Discount("", (byte) 50)},
-                {multipleStrategy, testUser, testEvent, now, 10L, pack10Seats, new Discount("", (byte) 50)}
+                {multipleStrategy, testUser, testEvent, now, 5L, pack10Seats,
+                        new Discount(multipleStrategy, "", (byte) 50)},
+                {multipleStrategy, testUser, testEvent, now, 10L, pack10Seats,
+                        new Discount(multipleStrategy, "", (byte) 50)}
         };
     }
 

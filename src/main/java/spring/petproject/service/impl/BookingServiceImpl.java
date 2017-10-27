@@ -58,8 +58,8 @@ public class BookingServiceImpl implements BookingService {
             double seatPrice = auditorium.getVipSeats().contains(seat)
                     ? eventBasePrice * VIP_SEAT_COST_MULTIPLIER
                     : eventBasePrice;
-            byte discount = discountService.getDiscount(user, event, dateTime, seat, seats);
-            return seatPrice - seatPrice * discount / 100;
+            Discount discount = discountService.getDiscount(user, event, dateTime, seat, seats);
+            return seatPrice - seatPrice * discount.getDiscount() / 100;
         }).sum();
 
     }

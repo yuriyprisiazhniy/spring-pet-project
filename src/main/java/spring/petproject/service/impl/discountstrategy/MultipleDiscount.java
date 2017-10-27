@@ -40,9 +40,14 @@ public class MultipleDiscount implements DiscountStrategy {
         int startIndex = discountMultiplier - notDiscountedUserTickets - 1;
         for (int i = startIndex; i < ticketList.size(); i += discountMultiplier) {
             if (ticketList.get(i).equals(seat)) {
-                return new Discount(discountReason, discountRate);
+                return new Discount(this, discountReason, discountRate);
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Each" + discountMultiplier + "Discount";
     }
 }

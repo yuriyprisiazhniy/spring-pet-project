@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import spring.petproject.domain.Discount;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
 
@@ -27,9 +28,9 @@ public interface DiscountService {
      *            Seat that user buys
      * @param tickets
      *            Tickets that user buys
-     * @return discount value from 0 to 100
+     * @return discount object
      */
-    byte getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, NavigableSet<Long> tickets);
+    Discount getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long seat, NavigableSet<Long> tickets);
 
     /**
      * Get all registered discount strategies
