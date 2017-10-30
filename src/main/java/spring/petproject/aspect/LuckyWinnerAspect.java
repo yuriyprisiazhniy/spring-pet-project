@@ -18,12 +18,22 @@ public class LuckyWinnerAspect {
     private static final Logger logger = LoggerFactory.getLogger(LuckyWinnerAspect.class);
     private static final double LUCKY_RATE = 0.8;
 
+    private Random random;
+
+    public LuckyWinnerAspect(Random random) {
+        this.random = random;
+    }
+
+    public LuckyWinnerAspect() {
+        random = new Random();
+    }
+
     //TODO refactor when price will be assigned to Ticket
     @Before("execution(* spring.petproject.service.BookingService.bookTickets(..)) && args(tickets)")
     public void checkLucky(Set<Ticket> tickets) {
         tickets.stream()
                 .filter(t -> t.getUser() != null)
-                .filter(t -> new Random().nextDouble() > LUCKY_RATE)
+                .filter(t -> random.nextDouble() > LUCKY_RATE)
                 .forEach(ticket -> {
                             ticket.getUser()
                                     .addAdditionalInformation(String.format("Lucky ticket %d. Free of charge.", ticket.getSeat()));

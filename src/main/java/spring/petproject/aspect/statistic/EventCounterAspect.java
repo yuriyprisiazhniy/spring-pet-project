@@ -53,7 +53,7 @@ public class EventCounterAspect {
     }
 
     public EventStatistic getStatisticByEvent(Event e) {
-        return eventStatistic.get(e);
+        return eventStatistic.getOrDefault(e, new EventStatistic());
     }
 
     public Map<Event, EventStatistic> getAllStatistic() {
