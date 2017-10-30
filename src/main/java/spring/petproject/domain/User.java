@@ -1,9 +1,9 @@
 package spring.petproject.domain;
 
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDate;
-import java.util.NavigableSet;
-import java.util.Objects;
-import java.util.TreeSet;
+import java.util.*;
 
 
 public class User extends DomainObject {
@@ -17,6 +17,14 @@ public class User extends DomainObject {
     private LocalDate birthday;
 
     private NavigableSet<Ticket> tickets = new TreeSet<>();
+
+    private List<String> additionalInformation = new ArrayList<>();
+
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -58,10 +66,13 @@ public class User extends DomainObject {
         this.birthday = birthday;
     }
 
-    public User(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public List<String> getAdditionalInformation() {
+        return new ArrayList<>(additionalInformation);
+    }
+
+    public void addAdditionalInformation(String info) {
+        if (!StringUtils.isEmpty(info))
+            additionalInformation.add(info);
     }
 
     @Override
