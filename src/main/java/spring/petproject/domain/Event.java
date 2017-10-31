@@ -1,6 +1,7 @@
 package spring.petproject.domain;
 
 import org.hibernate.annotations.SortNatural;
+import spring.petproject.converter.jpaconverter.AuditoriumAttributeConverter;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -26,9 +27,11 @@ public class Event extends DomainObject {
     private EventRating rating;
 
     @ElementCollection
+    @Convert(converter = AuditoriumAttributeConverter.class, attributeName = "value")
     @SortNatural
     @CollectionTable(name = "Event_Auditoriums")
     @MapKeyColumn(name = "eventAirDate")
+    @Column(name = "auditorium")
     private SortedMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
 
     protected Event() {

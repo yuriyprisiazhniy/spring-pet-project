@@ -10,16 +10,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-@Embeddable
 public class Auditorium {
 
-    @Column(name = "auditoriumName", nullable = false)
     private String name;
 
-    @Transient
     private long numberOfSeats;
 
-    @Transient
     private Set<Long> vipSeats = Collections.emptySet();
 
     public Auditorium() {
