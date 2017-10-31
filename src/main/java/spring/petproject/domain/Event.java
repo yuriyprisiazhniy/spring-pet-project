@@ -11,6 +11,7 @@ import java.util.*;
 @Entity
 public class Event extends DomainObject {
 
+    @Column(nullable = false)
     private String name;
 
     @ElementCollection
@@ -24,10 +25,12 @@ public class Event extends DomainObject {
 
     @ElementCollection
     @SortNatural
-    @CollectionTable(name = "EVENT_AUDITORIUMS")
-    @MapKeyColumn(name = "EVENT_AIR_DATE")
-    @Column(name = "AUDITORIUM")
+    @CollectionTable(name = "Event_Auditoriums")
+    @MapKeyColumn(name = "eventAirDate")
     private SortedMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+
+    protected Event() {
+    }
 
     public Event(String name, double basePrice) {
         this.name = name;

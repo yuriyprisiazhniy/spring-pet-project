@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 public class DomainObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     public Long getId() {

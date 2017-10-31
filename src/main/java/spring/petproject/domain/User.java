@@ -3,22 +3,23 @@ package spring.petproject.domain;
 import org.hibernate.annotations.SortNatural;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 
 @Entity
 public class User extends DomainObject {
 
+    @Column(nullable = false)
     private String firstName;
 
+    @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private LocalDate birthday;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
@@ -33,6 +34,8 @@ public class User extends DomainObject {
         this.lastName = lastName;
         this.email = email;
     }
+
+    protected User() {}
 
     public String getFirstName() {
         return firstName;

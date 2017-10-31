@@ -1,5 +1,6 @@
 package spring.petproject.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.stream.LongStream;
 @Embeddable
 public class Auditorium {
 
+    @Column(name = "auditoriumName")
     private String name;
 
     @Transient

@@ -14,6 +14,7 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
     @JoinColumn(nullable = false)
     private Event event;
 
+    @Column(nullable = false)
     private LocalDateTime dateTime;
 
     private long seat;
@@ -24,6 +25,8 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         this.dateTime = dateTime;
         this.seat = seat;
     }
+
+    protected Ticket() {}
 
     public User getUser() {
         return user;
