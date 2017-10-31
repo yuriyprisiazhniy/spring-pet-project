@@ -29,7 +29,6 @@ public class Event extends DomainObject {
     @SortNatural
     @CollectionTable(name = "Event_Auditoriums")
     @MapKeyColumn(name = "eventAirDate")
-    @Access(AccessType.PROPERTY)
     private SortedMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
 
     protected Event() {
@@ -212,16 +211,14 @@ public class Event extends DomainObject {
     }
 
     public void setAuditoriums(SortedMap<LocalDateTime, Auditorium> auditoriums) {
-//        this.auditoriums = auditoriums.entrySet().stream().collect(Collectors.toMap(
-//                (Map.Entry<LocalDateTime, Auditorium> e) -> e.getKey().truncatedTo(ChronoUnit.MINUTES),
-//                Map.Entry::getValue,
-//                (k, k2) -> {
-//                    throw new IllegalStateException(String.format("Duplicate key %s", k));
-//                },
-//                TreeMap::new));
+        this.auditoriums = auditoriums.entrySet().stream().collect(Collectors.toMap(
+                (Map.Entry<LocalDateTime, Auditorium> e) -> e.getKey().truncatedTo(ChronoUnit.MINUTES),
+                Map.Entry::getValue,
+                (k, k2) -> {
+                    throw new IllegalStateException(String.format("Duplicate key %s", k));
+                },
+                TreeMap::new));
 
-        this.auditoriums = new TreeMap<>(auditoriums);
-//        this.auditoriums = auditoriums;
     }
 
     @Override
