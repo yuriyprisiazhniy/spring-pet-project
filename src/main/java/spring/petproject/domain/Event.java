@@ -6,7 +6,9 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Event extends DomainObject {
@@ -27,6 +29,7 @@ public class Event extends DomainObject {
     @SortNatural
     @CollectionTable(name = "Event_Auditoriums")
     @MapKeyColumn(name = "eventAirDate")
+    @Access(AccessType.PROPERTY)
     private SortedMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
 
     protected Event() {
@@ -37,28 +40,33 @@ public class Event extends DomainObject {
         this.basePrice = basePrice;
     }
 
-    public Event(String name, NavigableSet<LocalDateTime> airDates, double basePrice, EventRating rating, NavigableMap<LocalDateTime, Auditorium> auditoriums) {
+    public Event(String name, double basePrice, EventRating rating, SortedMap<LocalDateTime, Auditorium> auditoriums) {
         this.name = name;
-        this.airDates = airDates;
         this.basePrice = basePrice;
         this.rating = rating;
-        this.auditoriums = auditoriums;
+        this.auditoriums = auditoriums.entrySet().stream().collect(Collectors.toMap(
+                (Map.Entry<LocalDateTime, Auditorium> e) -> e.getKey().truncatedTo(ChronoUnit.MINUTES),
+                Map.Entry::getValue,
+                (k, k2) -> {
+                    throw new IllegalStateException(String.format("Duplicate key %s", k));
+                },
+                TreeMap::new));
+        this.airDates = new TreeSet<>(this.auditoriums.keySet());
     }
 
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
      * auditorium to it.
-     * 
-     * @param dateTime
-     *            Date and time of aired event for which to assign
-     * @param auditorium
-     *            Auditorium that should be assigned
+     *
+     * @param dateTime   Date and time of aired event for which to assign
+     * @param auditorium Auditorium that should be assigned
      * @return <code>true</code> if successful, <code>false</code> if event is
-     *         not aired on that date
+     * not aired on that date
      */
     public boolean assignAuditorium(LocalDateTime dateTime, Auditorium auditorium) {
-        if (airDates.contains(dateTime)) {
-            auditoriums.put(dateTime, auditorium);
+        LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
+        if (airDates.contains(truncatedTime)) {
+            auditoriums.put(truncatedTime, auditorium);
             return true;
         } else {
             return false;
@@ -67,42 +75,39 @@ public class Event extends DomainObject {
 
     /**
      * Removes auditorium assignment from event
-     * 
-     * @param dateTime
-     *            Date and time to remove auditorium for
+     *
+     * @param dateTime Date and time to remove auditorium for
      * @return <code>true</code> if successful, <code>false</code> if not
-     *         removed
+     * removed
      */
     public boolean removeAuditoriumAssignment(LocalDateTime dateTime) {
-        return auditoriums.remove(dateTime) != null;
+        return auditoriums.remove(dateTime.truncatedTo(ChronoUnit.MINUTES)) != null;
     }
 
     /**
      * Add date and time of event air
-     * 
-     * @param dateTime
-     *            Date and time to add
+     *
+     * @param dateTime Date and time to add
      * @return <code>true</code> if successful, <code>false</code> if already
-     *         there
+     * there
      */
     public boolean addAirDateTime(LocalDateTime dateTime) {
-        return airDates.add(dateTime);
+        return airDates.add(dateTime.truncatedTo(ChronoUnit.MINUTES));
     }
 
     /**
      * Adding date and time of event air and assigning auditorium to that
-     * 
-     * @param dateTime
-     *            Date and time to add
-     * @param auditorium
-     *            Auditorium to add if success in date time add
+     *
+     * @param dateTime   Date and time to add
+     * @param auditorium Auditorium to add if success in date time add
      * @return <code>true</code> if successful, <code>false</code> if already
-     *         there
+     * there
      */
     public boolean addAirDateTime(LocalDateTime dateTime, Auditorium auditorium) {
-        boolean result = airDates.add(dateTime);
+        LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
+        boolean result = airDates.add(truncatedTime);
         if (result) {
-            auditoriums.put(dateTime, auditorium);
+            auditoriums.put(truncatedTime, auditorium);
         }
         return result;
     }
@@ -110,35 +115,34 @@ public class Event extends DomainObject {
     /**
      * Removes the date and time of event air. If auditorium was assigned to
      * that date and time - the assignment is also removed
-     * 
-     * @param dateTime
-     *            Date and time to remove
+     *
+     * @param dateTime Date and time to remove
      * @return <code>true</code> if successful, <code>false</code> if not there
      */
     public boolean removeAirDateTime(LocalDateTime dateTime) {
-        boolean result = airDates.remove(dateTime);
+        LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
+        boolean result = airDates.remove(truncatedTime);
         if (result) {
-            auditoriums.remove(dateTime);
+            auditoriums.remove(truncatedTime);
         }
         return result;
     }
 
     /**
      * Checks if event airs on particular date and time
-     * 
-     * @param dateTime
-     *            Date and time to check
+     *
+     * @param dateTime Date and time to check
      * @return <code>true</code> event airs on that date and time
      */
     public boolean airsOnDateTime(LocalDateTime dateTime) {
-        return airDates.stream().anyMatch(dt -> dt.equals(dateTime));
+        LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
+        return airDates.stream().anyMatch(dt -> dt.equals(truncatedTime));
     }
 
     /**
      * Checks if event airs on particular date
-     * 
-     * @param date
-     *            Date to ckeck
+     *
+     * @param date Date to ckeck
      * @return <code>true</code> event airs on that date
      */
     public boolean airsOnDate(LocalDate date) {
@@ -148,25 +152,25 @@ public class Event extends DomainObject {
     /**
      * Checking if event airs on dates between <code>from</code> and
      * <code>to</code> inclusive
-     * 
-     * @param from
-     *            Start date to check
-     * @param to
-     *            End date to check
+     *
+     * @param from Start date to check
+     * @param to   End date to check
      * @return <code>true</code> event airs on dates
      */
     public boolean airsOnDates(LocalDate from, LocalDate to) {
         return airDates.stream()
                 .anyMatch(dt -> dt.toLocalDate().compareTo(from) >= 0 && dt.toLocalDate().compareTo(to) <= 0);
     }
+
     /**
-    * Get auditorium where event will occur in specified dateTime
+     * Get auditorium where event will occur in specified dateTime
+     *
      * @param time time of event air
      * @return auditorium or <code>null</code> if event doesn't air in specified time
-    */
+     */
     @Nullable
     public Auditorium getAuditoriumOnDateTime(LocalDateTime time) {
-        return auditoriums.get(time);
+        return auditoriums.get(time.truncatedTo(ChronoUnit.MINUTES));
     }
 
     public String getName() {
@@ -181,8 +185,10 @@ public class Event extends DomainObject {
         return airDates;
     }
 
-    public void setAirDates(NavigableSet<LocalDateTime> airDates) {
-        this.airDates = airDates;
+    public void setAirDates(SortedSet<LocalDateTime> airDates) {
+        this.airDates = new TreeSet<>(airDates.stream()
+                .map(t -> t.truncatedTo(ChronoUnit.MINUTES)).collect(Collectors.toSet())
+        );
     }
 
     public double getBasePrice() {
@@ -205,8 +211,17 @@ public class Event extends DomainObject {
         return auditoriums;
     }
 
-    public void setAuditoriums(NavigableMap<LocalDateTime, Auditorium> auditoriums) {
-        this.auditoriums = auditoriums;
+    public void setAuditoriums(SortedMap<LocalDateTime, Auditorium> auditoriums) {
+//        this.auditoriums = auditoriums.entrySet().stream().collect(Collectors.toMap(
+//                (Map.Entry<LocalDateTime, Auditorium> e) -> e.getKey().truncatedTo(ChronoUnit.MINUTES),
+//                Map.Entry::getValue,
+//                (k, k2) -> {
+//                    throw new IllegalStateException(String.format("Duplicate key %s", k));
+//                },
+//                TreeMap::new));
+
+        this.auditoriums = new TreeMap<>(auditoriums);
+//        this.auditoriums = auditoriums;
     }
 
     @Override

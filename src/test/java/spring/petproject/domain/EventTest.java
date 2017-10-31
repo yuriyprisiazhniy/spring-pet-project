@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -32,7 +33,7 @@ public class EventTest {
 	public void testAddRemoveAirDates() {
 		int size = event.getAirDates().size();
 		
-		LocalDateTime date = LocalDateTime.now().plusDays(5);
+		LocalDateTime date = LocalDateTime.now().plusDays(5).truncatedTo(ChronoUnit.MINUTES);
 		
 		event.addAirDateTime(date);
 		

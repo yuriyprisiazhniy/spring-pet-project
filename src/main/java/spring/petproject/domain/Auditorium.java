@@ -13,7 +13,7 @@ import java.util.stream.LongStream;
 @Embeddable
 public class Auditorium {
 
-    @Column(name = "auditoriumName")
+    @Column(name = "auditoriumName", nullable = false)
     private String name;
 
     @Transient

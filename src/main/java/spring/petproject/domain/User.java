@@ -65,7 +65,7 @@ public class User extends DomainObject {
         return tickets;
     }
 
-    public void setTickets(TreeSet<Ticket> tickets) {
+    public void setTickets(SortedSet<Ticket> tickets) {
         this.tickets = tickets;
     }
 
