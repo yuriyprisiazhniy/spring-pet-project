@@ -1,11 +1,16 @@
 package spring.petproject.domain;
 
+import org.hibernate.annotations.SortNatural;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.*;
 
-
+@Entity
 public class User extends DomainObject {
 
     private String firstName;
@@ -16,8 +21,11 @@ public class User extends DomainObject {
 
     private LocalDate birthday;
 
-    private NavigableSet<Ticket> tickets = new TreeSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @SortNatural
+    private SortedSet<Ticket> tickets = new TreeSet<>();
 
+    @ElementCollection
     private List<String> additionalInformation = new ArrayList<>();
 
     public User(String firstName, String lastName, String email) {
@@ -50,11 +58,11 @@ public class User extends DomainObject {
         this.email = email;
     }
 
-    public NavigableSet<Ticket> getTickets() {
+    public SortedSet<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(NavigableSet<Ticket> tickets) {
+    public void setTickets(TreeSet<Ticket> tickets) {
         this.tickets = tickets;
     }
 

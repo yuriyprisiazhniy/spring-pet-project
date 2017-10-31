@@ -13,6 +13,8 @@
     <aop:aspectj-autoproxy />
 
     <context:component-scan base-package="spring.petproject"/>
-    <context:property-placeholder location="classpath:/auditoriums/*.properties"/>
+    <context:property-placeholder location="classpath:/auditoriums/*.properties, classpath:/dbproperties/*.properties"/>
+
+    <import resource="jpa-context.xml"/>
 
 </beans>

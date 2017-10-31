@@ -1,13 +1,17 @@
 package spring.petproject.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
+@Entity
 public class Ticket extends DomainObject implements Comparable<Ticket> {
 
+    @ManyToOne
     private User user;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Event event;
 
     private LocalDateTime dateTime;

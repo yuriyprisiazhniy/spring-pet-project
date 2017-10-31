@@ -1,26 +1,33 @@
 package spring.petproject.domain;
 
+import org.hibernate.annotations.SortNatural;
+
 import javax.annotation.Nullable;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.NavigableMap;
-import java.util.NavigableSet;
-import java.util.Objects;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
-
+@Entity
 public class Event extends DomainObject {
 
     private String name;
 
-    private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
+    @ElementCollection
+    @SortNatural
+    private SortedSet<LocalDateTime> airDates = new TreeSet<>();
 
     private double basePrice;
 
+    @Enumerated(EnumType.STRING)
     private EventRating rating;
 
-    private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+    @ElementCollection
+    @SortNatural
+    @CollectionTable(name = "EVENT_AUDITORIUMS")
+    @MapKeyColumn(name = "EVENT_AIR_DATE")
+    @Column(name = "AUDITORIUM")
+    private SortedMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
 
     public Event(String name, double basePrice) {
         this.name = name;
@@ -167,7 +174,7 @@ public class Event extends DomainObject {
         this.name = name;
     }
 
-    public NavigableSet<LocalDateTime> getAirDates() {
+    public SortedSet<LocalDateTime> getAirDates() {
         return airDates;
     }
 
@@ -191,7 +198,7 @@ public class Event extends DomainObject {
         this.rating = rating;
     }
 
-    public NavigableMap<LocalDateTime, Auditorium> getAuditoriums() {
+    public SortedMap<LocalDateTime, Auditorium> getAuditoriums() {
         return auditoriums;
     }
 
