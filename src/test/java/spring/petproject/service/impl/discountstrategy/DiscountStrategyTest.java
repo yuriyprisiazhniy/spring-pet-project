@@ -32,24 +32,18 @@ public class DiscountStrategyTest {
         tickets.addAll(Arrays.asList(1L,2L,3L,4L,5L));
 
         return new Object[][]{
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(LocalDate.now().minusDays(6));
-                }}, testEvent, now, 1, tickets, null},
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(LocalDate.now().minusDays(5));
-                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(LocalDate.now().minusYears(20));
-                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(now.minusYears(20).minusDays(5).toLocalDate());
-                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(LocalDate.now().plusDays(3));
-                }}, testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
-                {birthdayStrategy, new User("First", "Last", "mail"){{
-                    setBirthday(LocalDate.now().minusYears(4).plusDays(8));
-                }}, testEvent, now, 1, tickets, null},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().minusDays(6)),
+                        testEvent, now, 1, tickets, null},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().minusDays(5)),
+                        testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().minusYears(20)),
+                        testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().minusYears(20).minusDays(5))
+                        , testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().plusDays(3)),
+                        testEvent, now, 1, tickets, new Discount(birthdayStrategy, "", (byte) 5)},
+                {birthdayStrategy, new User("First", "Last", "mail", LocalDate.now().minusYears(4).plusDays(8)),
+                        testEvent, now, 1, tickets, null},
                 {birthdayStrategy, null, testEvent, now, 1, tickets, null}
         };
     }
@@ -59,7 +53,7 @@ public class DiscountStrategyTest {
         Event testEvent = new Event("test", 10.1);
         testEvent.setRating(EventRating.HIGH);
         LocalDateTime now = LocalDateTime.now();
-        User testUser = new User("first", "last", "mail");
+        User testUser = new User("first", "last", "mail", LocalDate.now().minusYears(20));
         TreeSet<Ticket> userTickets = new TreeSet<>();
         userTickets.add(new Ticket(testUser, testEvent, now, 1L));
         userTickets.add(new Ticket(testUser, testEvent, now, 2L));

@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -21,7 +22,7 @@ public class IdGeneratorTest {
     public void init() {
         //create initial storage to check that generated ids doesn't clash with existing ones
         userStorage = new HashMap<>();
-        User user = new User("First", "Last", "Mail");
+        User user = new User("First", "Last", "Mail", LocalDate.now().minusYears(20));
         user.setId(2L);
         userStorage.put(user.getId(), user);
 

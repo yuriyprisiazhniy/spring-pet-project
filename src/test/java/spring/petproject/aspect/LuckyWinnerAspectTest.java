@@ -8,6 +8,7 @@ import spring.petproject.domain.Ticket;
 import spring.petproject.domain.User;
 import spring.petproject.service.BookingService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,8 +41,8 @@ public class LuckyWinnerAspectTest {
 
     @Test
     public void testLucky() {
-        User user1 = spy(new User("first", "last", "mail"));
-        User user2 = spy(new User("second", "last", "mail"));
+        User user1 = spy(new User("first", "last", "mail", LocalDate.now().minusYears(20)));
+        User user2 = spy(new User("second", "last", "mail", LocalDate.now().minusYears(20)));
         Ticket t1 = new Ticket(user1, null, LocalDateTime.now(), 1L);
         Ticket t2 = new Ticket(user2, null, LocalDateTime.now(), 2L);
         bookingServiceProxy.bookTickets(new HashSet<>(Arrays.asList(t1, t2)));

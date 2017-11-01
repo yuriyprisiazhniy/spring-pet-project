@@ -10,6 +10,7 @@ import spring.petproject.service.BookingService;
 import spring.petproject.service.EventService;
 import spring.petproject.service.exception.BookingException;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -91,7 +92,7 @@ public class EventCounterAspectTest {
     public void testPriceQueriedException() {
         bookingServiceProxy.getTicketsPrice(testEvent1, null, null, null);
         try {
-            bookingServiceProxy.getTicketsPrice(testEvent1, null, new User("", "", ""), null);
+            bookingServiceProxy.getTicketsPrice(testEvent1, null, new User("", "", "", LocalDate.now().minusYears(20)), null);
             fail("Exception must be thrown");
         } catch (BookingException ex) {
             assertEquals(aspect.getStatisticByEvent(testEvent1).getPriceQueried(), 1);

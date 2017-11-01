@@ -7,6 +7,7 @@ import spring.petproject.dao.mapstorage.domainimpl.StaticUserDAO;
 import spring.petproject.domain.Event;
 import spring.petproject.domain.User;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.testng.Assert.*;
@@ -15,6 +16,7 @@ public class StaticStorageTest {
 
     private StaticUserDAO userDAO = new StaticUserDAO();
     private StaticEventDAO eventDAO = new StaticEventDAO();
+    private LocalDate birthday = LocalDate.now().minusYears(20);
 
     @BeforeMethod
     public void beforeMethod() {
@@ -23,30 +25,30 @@ public class StaticStorageTest {
 
     @Test
     public void testSaveNewEntity() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertEquals(userDAO.getAll().size(), 1, "User storage must contain one element");
     }
 
     @Test
     public void testSaveNewEntityIdAssignment() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertNotNull(user.getId(), "Id must be assigned");
     }
 
     @Test
     public void testSaveNewEntityStorageIsolation() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertTrue(eventDAO.getAll().isEmpty(), "Entity saving must not affect other entity storage");
     }
 
     @Test
     public void testSaveEntityWithSameId() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
-        User secondUser = new User("Second", "User", "second@mail.com");
+        User secondUser = new User("Second", "User", "second@mail.com", birthday);
         secondUser.setId(1L);
         User savedUser = userDAO.save(secondUser);
         assertEquals(userDAO.getAll().size(), 1, "Second user must update existent one");
@@ -55,8 +57,8 @@ public class StaticStorageTest {
 
     @Test
     public void testSaveSameEntityWithoutId() {
-        User user = new User("First", "Last", "first@mail.com");
-        User user1 = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
+        User user1 = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         userDAO.save(user1);
         assertEquals(userDAO.getAll().size(), 2, "Second user must be added");
@@ -64,7 +66,7 @@ public class StaticStorageTest {
 
     @Test
     public void testRemoveEntityWithId() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         userDAO.remove(user);
         assertTrue(userDAO.getAll().isEmpty(), "Storage must be empty");
@@ -72,8 +74,8 @@ public class StaticStorageTest {
 
     @Test
     public void testRemoveEntityWithoutId() {
-        User user = new User("First", "Last", "first@mail.com");
-        User user1 = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
+        User user1 = new User("First", "Last", "first@mail.com", birthday);
         assertEquals(user, user1);
         userDAO.save(user);
         userDAO.remove(user1);
@@ -82,8 +84,8 @@ public class StaticStorageTest {
 
     @Test
     public void testRemoveOtherEntityWithSameId() {
-        User user = new User("First", "Last", "first@mail.com");
-        User user1 = new User("Changed", "Changed", "changed@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
+        User user1 = new User("Changed", "Changed", "changed@mail.com", birthday);
         userDAO.save(user);
         user1.setId(user.getId());
         userDAO.remove(user1);
@@ -92,14 +94,14 @@ public class StaticStorageTest {
 
     @Test
     public void testGetByNotExistentId() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertNull(userDAO.getById(2L), "Get by not existent id must return null");
     }
 
     @Test
     public void testGetByExistentId() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         User secondUser = userDAO.getById(1L);
         assertEquals(secondUser, user, "Users must be equals");
@@ -112,8 +114,8 @@ public class StaticStorageTest {
 
     @Test
     public void testGetAll() {
-        User user = new User("First", "Last", "first@mail.com");
-        User user1 = new User("Changed", "Changed", "changed@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
+        User user1 = new User("Changed", "Changed", "changed@mail.com", birthday);
         userDAO.save(user);
         userDAO.save(user1);
         assertTrue(userDAO.getAll().containsAll(Arrays.asList(user, user1)), "Storage must contains all entities");
@@ -121,7 +123,7 @@ public class StaticStorageTest {
 
     @Test
     public void testClearStorageForAllDomains() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         Event event = new Event("test", 10);
         userDAO.save(user);
         eventDAO.save(event);
@@ -132,22 +134,22 @@ public class StaticStorageTest {
 
     @Test
     public void testClearStorageResetIdGeneratorSequence() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertEquals(user.getId(), Long.valueOf(1), "Id must be 1");
         AbstractStaticStorage.clearStaticStorage(true);
-        User user1 = new User("First", "Last", "first@mail.com");
+        User user1 = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user1);
         assertEquals(user1.getId(), Long.valueOf(1), "Id must be 1 again");
     }
 
     @Test
     public void testClearStorageWithoutResetIdGeneratorSequence() {
-        User user = new User("First", "Last", "first@mail.com");
+        User user = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user);
         assertEquals(user.getId(), Long.valueOf(1), "Id must be 1");
         AbstractStaticStorage.clearStaticStorage(false);
-        User user1 = new User("First", "Last", "first@mail.com");
+        User user1 = new User("First", "Last", "first@mail.com", birthday);
         userDAO.save(user1);
         assertNotEquals(user1.getId(), 1L, "Id must have other value");
     }

@@ -6,6 +6,7 @@ import spring.petproject.dao.AbstractDomainObjectService;
 import spring.petproject.domain.User;
 import spring.petproject.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +22,10 @@ public class UserServiceTest {
     @SuppressWarnings("unchecked")
     public void init() {
         AbstractDomainObjectService<User> userDAO = (AbstractDomainObjectService<User>) mock(AbstractDomainObjectService.class);
-        testData.add(new User("First", "User", "first@mail.com"));
-        testData.add(new User("Second", "User", "second@mail.com"));
-        testData.add(new User("Third", "User", "third@mail.com"));
+        LocalDate birthday = LocalDate.now().minusYears(20);
+        testData.add(new User("First", "User", "first@mail.com", birthday));
+        testData.add(new User("Second", "User", "second@mail.com", birthday));
+        testData.add(new User("Third", "User", "third@mail.com", birthday));
         when(userDAO.getAll()).thenReturn(testData);
 
         userService = new UserServiceImpl(userDAO);

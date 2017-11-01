@@ -9,6 +9,7 @@ import spring.petproject.domain.User;
 import spring.petproject.service.DiscountService;
 import spring.petproject.service.DiscountStrategy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -36,7 +37,7 @@ public class DiscountServiceTest {
 
     @DataProvider
     public Object[][] getDiscountDataProvider() {
-        User testUser = new User("first", "last", "mail");
+        User testUser = new User("first", "last", "mail", LocalDate.now().minusYears(20));
         Event testEvent = new Event("test", 10.0);
 
         return new Object[][] {

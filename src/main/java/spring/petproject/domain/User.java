@@ -29,10 +29,11 @@ public class User extends DomainObject {
     @ElementCollection
     private List<String> additionalInformation = new ArrayList<>();
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, LocalDate birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.birthday = birthday;
     }
 
     protected User() {}

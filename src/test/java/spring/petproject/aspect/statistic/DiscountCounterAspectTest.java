@@ -9,6 +9,7 @@ import spring.petproject.domain.User;
 import spring.petproject.service.DiscountService;
 import spring.petproject.service.DiscountStrategy;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class DiscountCounterAspectTest {
     private void init() {
         discountStrategy1 = mock(DiscountStrategy.class);
         discountStrategy2 = mock(DiscountStrategy.class);
-        testUser = new User("first", "last", "mail");
+        testUser = new User("first", "last", "mail", LocalDate.now().minusYears(20));
         DiscountService discountServiceMock = mock(DiscountService.class);
         when(discountServiceMock.getDiscount(eq(testUser), any(), any(), anyLong(), any()))
                 .thenReturn(new Discount());

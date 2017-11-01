@@ -54,8 +54,7 @@ public class BookingServiceTest {
         testEvent.addAirDateTime(testDateTime.plusHours(2), a2);
         testEvent.setRating(EventRating.MID);
 
-        testUser = new User("First", "Last", "mail");
-        testUser.setBirthday(testDateTime.toLocalDate().minusYears(20));
+        testUser = new User("First", "Last", "mail", testDateTime.toLocalDate().minusYears(20));
 
         bookingService = new BookingServiceImpl(discountServiceMock);
     }
