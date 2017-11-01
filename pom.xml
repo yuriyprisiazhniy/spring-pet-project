@@ -16,17 +16,19 @@
         <org.slf4j.version>1.7.25</org.slf4j.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>staticStorage</id>
+        </profile>
+        <profile>
+            <id>dbStorage</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <build>
-        <!--<resources>-->
-        <!--<resource>-->
-        <!--<directory>src/main/resources</directory>-->
-        <!--<filtering>false</filtering>-->
-        <!--<targetPath>../resources</targetPath>-->
-        <!--<includes>-->
-        <!--<include>**/*</include>-->
-        <!--</includes>-->
-        <!--</resource>-->
-        <!--</resources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

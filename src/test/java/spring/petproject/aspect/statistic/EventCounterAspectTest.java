@@ -11,6 +11,7 @@ import spring.petproject.service.EventService;
 import spring.petproject.service.exception.BookingException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -101,9 +102,10 @@ public class EventCounterAspectTest {
 
     @Test
     public void testBookTickets() {
-        Ticket t1 = new Ticket(null, testEvent1, null, 0);
-        Ticket t2 = new Ticket(null, testEvent1, null, 1);
-        Ticket t3 = new Ticket(null, testEvent2, null, 2);
+        LocalDateTime now = LocalDateTime.now();
+        Ticket t1 = new Ticket(null, testEvent1, now, 0);
+        Ticket t2 = new Ticket(null, testEvent1, now, 1);
+        Ticket t3 = new Ticket(null, testEvent2, now, 2);
         Set<Ticket> tickets = new HashSet<>(Arrays.asList(t1, t2, t3));
         bookingServiceProxy.bookTickets(tickets);
         assertEquals(aspect.getAllStatistic().size(), 2);
