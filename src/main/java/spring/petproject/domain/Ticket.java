@@ -1,7 +1,11 @@
 package spring.petproject.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +16,7 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Event event;
 
     @Column(nullable = false)
@@ -22,7 +27,7 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
     public Ticket(User user, Event event, LocalDateTime dateTime, long seat) {
         this.user = user;
         this.event = event;
-        this.dateTime = dateTime;
+        this.dateTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
         this.seat = seat;
     }
 

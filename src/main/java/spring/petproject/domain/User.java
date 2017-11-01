@@ -22,7 +22,7 @@ public class User extends DomainObject {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @SortNatural
     private SortedSet<Ticket> tickets = new TreeSet<>();
 
