@@ -10,8 +10,7 @@ import javax.persistence.AttributeConverter;
 @Component
 public class AuditoriumAttributeConverter implements AttributeConverter<Auditorium, String>{
 
-    @Autowired
-    private AuditoriumService auditoriumService;
+    private static AuditoriumService auditoriumService;
 
     @Override
     public String convertToDatabaseColumn(Auditorium attribute) {
@@ -21,5 +20,10 @@ public class AuditoriumAttributeConverter implements AttributeConverter<Auditori
     @Override
     public Auditorium convertToEntityAttribute(String dbData) {
         return auditoriumService.getByName(dbData);
+    }
+
+    @Autowired //some kind of hack
+    public void setAuditoriumService(AuditoriumService auditoriumService) {
+        AuditoriumAttributeConverter.auditoriumService = auditoriumService;
     }
 }
