@@ -24,9 +24,9 @@ public class EventTest {
 	
 		LocalDateTime now = LocalDateTime.now();
 		
-		event.addAirDateTime(now);
-		event.addAirDateTime(now.plusDays(1));
-		event.addAirDateTime(now.plusDays(2));
+		event.addAirDateTime(now, new Auditorium());
+		event.addAirDateTime(now.plusDays(1), new Auditorium());
+		event.addAirDateTime(now.plusDays(2), new Auditorium());
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ public class EventTest {
 		
 		LocalDateTime date = LocalDateTime.now().plusDays(5).truncatedTo(ChronoUnit.MINUTES);
 		
-		event.addAirDateTime(date);
+		event.addAirDateTime(date, new Auditorium());
 		
 		assertEquals(size+1, event.getAirDates().size());
 		assertTrue(event.getAirDates().contains(date));
@@ -58,7 +58,7 @@ public class EventTest {
 		assertFalse(event.airsOnDates(LocalDate.now().minusDays(10), LocalDate.now().minusDays(5)));
 		
 		LocalDateTime time = LocalDateTime.now().plusHours(4);
-		event.addAirDateTime(time);
+		event.addAirDateTime(time, new Auditorium());
 		assertTrue(event.airsOnDateTime(time));
 		time = time.plusHours(30);
 		assertFalse(event.airsOnDateTime(time));
@@ -66,11 +66,12 @@ public class EventTest {
 	
 	@Test
 	public void testAddRemoveAuditoriums() {
-		LocalDateTime time = event.getAirDates().first();
+		LocalDateTime time = LocalDateTime.now();
+		event = new Event("aaa", 1.1);
 		
 		assertTrue(event.getAuditoriums().isEmpty());
 		
-		event.assignAuditorium(time, new Auditorium());
+		event.addAirDateTime(time, new Auditorium());
 		
 		assertFalse(event.getAuditoriums().isEmpty());
 		
@@ -82,7 +83,8 @@ public class EventTest {
 	@Test
 	public void testAddRemoveAuditoriumsWithAirDates() {
 		LocalDateTime time = LocalDateTime.now().plusDays(10);
-		
+		event = new Event("aaa", 1.1);
+
 		assertTrue(event.getAuditoriums().isEmpty());
 		
 		event.addAirDateTime(time, new Auditorium());
@@ -97,7 +99,8 @@ public class EventTest {
 	@Test
 	public void testNotAddAuditoriumWithoutCorrectDate() {
 		LocalDateTime time = LocalDateTime.now().plusDays(10);
-		
+		event = new Event("aaa", 1.1);
+
 		boolean result = event.assignAuditorium(time, new Auditorium());
 		
 		assertFalse(result);

@@ -1,5 +1,6 @@
 package spring.petproject.domain;
 
+import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.SortNatural;
 import spring.petproject.converter.jpaconverter.AuditoriumAttributeConverter;
 
@@ -16,10 +17,6 @@ public class Event extends DomainObject {
 
     @Column(nullable = false)
     private String name;
-
-    @ElementCollection
-    @SortNatural
-    private SortedSet<LocalDateTime> airDates = new TreeSet<>();
 
     private double basePrice;
 
@@ -53,7 +50,6 @@ public class Event extends DomainObject {
                     throw new IllegalStateException(String.format("Duplicate key %s", k));
                 },
                 TreeMap::new));
-        this.airDates = new TreeSet<>(this.auditoriums.keySet());
     }
 
     /**
@@ -67,12 +63,7 @@ public class Event extends DomainObject {
      */
     public boolean assignAuditorium(LocalDateTime dateTime, Auditorium auditorium) {
         LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
-        if (airDates.contains(truncatedTime)) {
-            auditoriums.put(truncatedTime, auditorium);
-            return true;
-        } else {
-            return false;
-        }
+        return auditoriums.replace(truncatedTime, auditorium) != null;
     }
 
     /**
@@ -87,17 +78,6 @@ public class Event extends DomainObject {
     }
 
     /**
-     * Add date and time of event air
-     *
-     * @param dateTime Date and time to add
-     * @return <code>true</code> if successful, <code>false</code> if already
-     * there
-     */
-    public boolean addAirDateTime(LocalDateTime dateTime) {
-        return airDates.add(dateTime.truncatedTo(ChronoUnit.MINUTES));
-    }
-
-    /**
      * Adding date and time of event air and assigning auditorium to that
      *
      * @param dateTime   Date and time to add
@@ -107,11 +87,7 @@ public class Event extends DomainObject {
      */
     public boolean addAirDateTime(LocalDateTime dateTime, Auditorium auditorium) {
         LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
-        boolean result = airDates.add(truncatedTime);
-        if (result) {
-            auditoriums.put(truncatedTime, auditorium);
-        }
-        return result;
+        return auditoriums.putIfAbsent(truncatedTime, auditorium) == null;
     }
 
     /**
@@ -123,11 +99,7 @@ public class Event extends DomainObject {
      */
     public boolean removeAirDateTime(LocalDateTime dateTime) {
         LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
-        boolean result = airDates.remove(truncatedTime);
-        if (result) {
-            auditoriums.remove(truncatedTime);
-        }
-        return result;
+        return auditoriums.remove(truncatedTime) != null;
     }
 
     /**
@@ -138,7 +110,7 @@ public class Event extends DomainObject {
      */
     public boolean airsOnDateTime(LocalDateTime dateTime) {
         LocalDateTime truncatedTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
-        return airDates.stream().anyMatch(dt -> dt.equals(truncatedTime));
+        return auditoriums.containsKey(truncatedTime);
     }
 
     /**
@@ -148,7 +120,7 @@ public class Event extends DomainObject {
      * @return <code>true</code> event airs on that date
      */
     public boolean airsOnDate(LocalDate date) {
-        return airDates.stream().anyMatch(dt -> dt.toLocalDate().equals(date));
+        return auditoriums.keySet().stream().anyMatch(dt -> dt.toLocalDate().equals(date));
     }
 
     /**
@@ -160,7 +132,7 @@ public class Event extends DomainObject {
      * @return <code>true</code> event airs on dates
      */
     public boolean airsOnDates(LocalDate from, LocalDate to) {
-        return airDates.stream()
+        return auditoriums.keySet().stream()
                 .anyMatch(dt -> dt.toLocalDate().compareTo(from) >= 0 && dt.toLocalDate().compareTo(to) <= 0);
     }
 
@@ -184,13 +156,7 @@ public class Event extends DomainObject {
     }
 
     public SortedSet<LocalDateTime> getAirDates() {
-        return airDates;
-    }
-
-    public void setAirDates(SortedSet<LocalDateTime> airDates) {
-        this.airDates = new TreeSet<>(airDates.stream()
-                .map(t -> t.truncatedTo(ChronoUnit.MINUTES)).collect(Collectors.toSet())
-        );
+        return new TreeSet<>(auditoriums.keySet());
     }
 
     public double getBasePrice() {
